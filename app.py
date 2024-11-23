@@ -5,7 +5,7 @@ from models.student import *
 
 app = Flask(__name__)
 
-student_model = Student()
+student_model = Student('./databases/students.json')
 
 @app.route('/')
 def hello_world():
@@ -33,7 +33,7 @@ def list_students():
     result = ""
     for student in students:
         result += student['first_name'] + ' ' + student['last_name'] + '<br>'
-    return result  # Returning the concatenated string after the loop
+    return result
 
 
 if __name__ == '__main__':

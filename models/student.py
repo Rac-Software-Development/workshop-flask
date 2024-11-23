@@ -1,26 +1,27 @@
 from databases.database import Database
-
-
 class Student:
-    def __init__(self):
-        database = Database('./databases/database.db')
-        database.setup_student_table()
+    def __init__(self, path):
+        """
+        Initialize the Student class with a reference to the database.
+        """
+        self.db = Database(path)
 
     def save_student(self, first_name, last_name, years_on_school, date_of_birth, email, password):
-        database = Database('./databases/database.db')
-        cursor, con = database.connect_db()
-
+        """
+        saves a new student to the database.
+        """
+        con = self.db.connect()
+        cursor = con.cursor()
         cursor.execute(
-            "INSERT INTO students (first_name, last_name, years_on_school, dob, email, password) VALUES (?, ?, ?, ?, "
-            "?, ?)",
+            "INSERT INTO students (first_name, last_name, years_on_school, dob, email, password) VALUES (?, ?, ?, ?, ?, ?)",
             (first_name, last_name, years_on_school, date_of_birth, email, password))
         con.commit()
-        con.close()
 
     def get_all_students(self):
-        database = Database('./databases/database.db')
-        cursor, con = database.connect_db()
-
+        """
+        Retrieve all students from the database.
+        """
+        con = self.db.connect()
+        cursor = con.cursor()
         cursor.execute("SELECT * FROM students")
-        students = cursor.fetchall()
-        return students
+        return cursor.fetchall()
