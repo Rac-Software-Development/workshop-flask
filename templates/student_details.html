@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+
+</head>
+<body>
+    <h1>Student succesvol aangemaakt</h1>
+    <p><strong>ID:</strong> {{ student['id'] }}</p>
+    <p><strong>Voornaam:</strong> {{ student['first_name'] }}</p>
+    <p><strong>Achternaam:</strong> {{ student['last_name'] }}</p>
+    <p><strong>Jaar op school:</strong> {{ student['years_on_school'] }}</p>
+    <p><strong>Geboortedatu,:</strong> {{ student['date_of_birth'] }}</p>
+    <p><strong>Email:</strong> {{ student['email'] }}</p>
+
+    <a href="/students">Bekijk alle studenten</a>
+</body>
+</html>
