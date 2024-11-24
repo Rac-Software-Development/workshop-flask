@@ -38,7 +38,7 @@ def save_form():
         E-mail: {student_added['email']}
     </p>
     <a href="/">Terug naar formulier</a><br>
-    <a href="/students" Studenten overzicht</a><br>
+    <a href="/students">Studenten overzicht</a><br>
     """
 
     return result
