@@ -27,7 +27,20 @@ def save_form():
     student_id = student_model.save_student(first_name, last_name, years_on_school, date_of_birth, email, password)
     student_added = student_model.get_single_student(student_id)
 
-    return render_template('student_details.html', student=dict(student_added))
+    result = f"""
+    <h1>Student Succesvol Toegevoegd</h1>
+    <p>
+        ID: {student_added['id']}<br>
+        Voornaam: {student_added['first_name']}<br>
+        Achternaam: {student_added['last_name']}<br>
+        Jaren op school: {student_added['years_on_school']}<br>
+        Geboortedatum: {student_added['date_of_birth']}<br>
+        E-mail: {student_added['email']}
+    </p>
+    <a href="/">Terug naar formulier</a>
+    """
+
+    return result
 
 
 @app.route('/students', methods=['GET'])
