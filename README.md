@@ -36,28 +36,28 @@ import sqlite3  # Imports the sqlite3 module
 class Database:
     def __init__(self, path):
         """
-        Initialiseer de Database-klasse en maak een verbinding met de opgegeven database.
+        Initialize the database class with a default path.
+        Automatically sets up the required tables.
         """
         self.path = path
         self._setup_tables()
 
     def connect(self):
         """
-        Maakt een verbinding met de database en retourneert deze.
+        Establish and return a new connection to the database.
         """
         con = sqlite3.connect(self.path)
-        con.row_factory = sqlite3.Row  # Zorgt ervoor dat resultaten als een dictionary worden teruggegeven
+        con.row_factory = sqlite3.Row  # Returns results as dictionaries
         return con
 
     def _setup_tables(self):
         """
-        Zorgt ervoor dat de benodigde tabellen bestaan in de database
-        en voegt standaardgegevens toe als die nog niet bestaan.
+        Create the students table if it doesn't exist and add default entries.
         """
         with self.connect() as con:
             cursor = con.cursor()
 
-            # Maak de tabel students aan
+            # Create the students table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS students (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -71,7 +71,7 @@ class Database:
             ''')
             con.commit()
 
-            # Voeg standaardgegevens toe als ze nog niet bestaan
+            # Insert default students if they don't already exist
             default_students = [
                 ("Louella", "Creemers", 3, "2005-04-15", "louella.creemers@example.com", "password123"),
                 ("Mark", "Otting", 4, "2004-08-20", "mark.otting@example.com", "securepass456"),
