@@ -311,7 +311,7 @@ knop klikt krijg je als het goed is het volgende te zien:<br>
 ![1](save_form.png) 
 
 Als je de database-viewer (View -> Tool Windows -> Database) opent hier in PyCharm zie je de gegevens nu ook in het 
-Student tabel staan door met je rechtermuisknop op de Student tabel te klikken en daarna op Edit Data:<br>
+students tabel staan door met je rechtermuisknop op het students tabel te klikken en daarna op Edit Data:<br>
 ![database_overview](db_view.png)
 
 Als je de database niet in de lijst ziet staan bij het Database-tabje, klik dan op het plusje (+), dan op `Data Source from Path` en selecteer
