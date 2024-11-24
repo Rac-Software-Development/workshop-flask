@@ -126,7 +126,7 @@ Het model zorgt ervoor dat:
 * Maak in deze map een bestand met de naam `student.py`.
 * Schrijf een class `Student` die een verbinding maakt met de database.
 
-**Hint:** de Database class vraagt om een path (locatie van de database.py)
+**Hint:** de Database class vraagt om een path (locatie van de `database.db`)
 
 <details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
 in student.py (in de models map):
