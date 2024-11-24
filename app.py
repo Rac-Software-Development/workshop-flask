@@ -37,7 +37,8 @@ def save_form():
         Geboortedatum: {student_added['date_of_birth']}<br>
         E-mail: {student_added['email']}
     </p>
-    <a href="/">Terug naar formulier</a>
+    <a href="/">Terug naar formulier</a><br>
+    <a href="/students" Studenten overzicht</a><br>
     """
 
     return result
