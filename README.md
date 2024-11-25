@@ -183,10 +183,10 @@ Wanneer je een backend bouwt, wil je graag dat je code netjes gestructureerd is.
 2. **Minder dubbele code:**
    - Stel dat je op meerdere plekken studenten uit de database wilt ophalen. Met een `Student` class hoef je de database-logica maar één keer te schrijven. Daarna kun je overal de functies uit de class gebruiken.
 
-3**Toekomstbestendig:**
+3. **Toekomstbestendig:**
    - Als je later nieuwe dingen aan je applicatie toevoegt (zoals een extra veld in de database of nieuwe functies), hoef je alleen de `Student` class aan te passen. De rest van je code blijft werken.
 
-4**Best practices:**
+4. **Best practices:**
    - Het gebruik van een model class is een standaardmanier om grotere applicaties te bouwen. Dit maakt je project niet alleen professioneler, maar ook veel makkelijker te onderhouden.
 
 ### Opdracht 1.1 - Het maken van de Student class
