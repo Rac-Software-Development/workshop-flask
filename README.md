@@ -165,7 +165,9 @@ Location: ...
 
 ### Opdracht 0.3 - Start de applicatie
 Zorg ervoor dat je app.py niet aanpast naar clonen, en start de Flask applicatie door op het start-knopje te klikken rechtsboven.
-Zodra je terminal aangeeft dat `127.0.0.1:5000` running is, kan je op de link klikken en dan zie je de form van `hello_world.html`, want die zit op dit moment op root (dus route `/`).
+Zodra je terminal aangeeft dat `127.0.0.1:5000` running is, kan je op de link klikken en dan zie je de form van `hello_world.html`, want die zit op dit moment op root (dus route `/`):<br>
+![home-page view](docs/images/home.png)
+
 De studenten overzicht link werkt niet. Dat lossen we op in opdracht 2.
 
 ## Opdracht 1 - Maak een student model
@@ -325,7 +327,8 @@ Zodra deze opdracht afgerond is kan je je Flask applicatie opstarten en het uitp
 2. Door een student toe te voegen via het formulier en daarna op `Studenten overzicht` te klikken.
 
 Je studenten-overzicht zou er zo uit moeten zien:<br>
-![student_overview](student_overview.png)
+![student_overview](docs/images/student_overview.png)
+
 
 ## Opdracht 3 - Het weergeven van 1 student
 We hebben nu een overview / dashboard in `/students` maar het zou ook fijn zijn als we erop kunnen klikken en de details kunnen 
@@ -407,9 +410,8 @@ Wat gebeurt er hier?
 
 ---
 
-Je kan dit nu testen door je flask applicatie op te starten en naar `localhost:5000/students/1` te gaan. Dan zie je dit:<br>
-VOEG TOE.
-
+Je kan dit nu testen door je flask applicatie op te starten en naar `localhost:5000/students/1` te gaan of door op de `details` link te klikken van de eerste student bij `localhost:5000/students`. Dan zie je dit:<br>
+![details of student Louella Creemers](docs/images/student_details.png)
 
 
 ## Opdracht 4 - Het toevoegen van een student in de database
@@ -532,10 +534,10 @@ def save_form():
 
 Start je Flask applicatie op na het afronden van deze opdracht. Als je nu gegevens van een student invult en op de submit 
 knop klikt krijg je als het goed is het volgende te zien:<br>
-![1](save_form.png) 
+![save_form page](docs/images/save_form.png) 
 
 Als je naar `/students` gaat zie je nu dat de nieuwe student toegevoegd is:<br>
-VOEG TOE
+![student overzicht met nieuwe student](docs/images/student_overview_after_form.png)
 
 ### Opdracht 4.3 - Kleine aanpassingen
 Zo'n `<p>` tag dat zegt dat een student is aangemaakt is handig, maar het kan beter. 
@@ -611,7 +613,8 @@ def save_form():
 ---
 
 Start nu je Flask applicatie op en vul wat studenten gegevens in je formulier. Als het goed is krijg je nu de details van 
-deze nieuwe student te zien door de `/students/<student_id>` route die al langer bestond.
+deze nieuwe student te zien door de `/students/<student_id>` route die al langer bestond:<br>
+![student details after form submission](docs/images/student_details_after_form.png)
 
 
 ## **Goed gedaan!**
