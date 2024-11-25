@@ -172,10 +172,6 @@ De studenten overzicht link werkt niet. Dat lossen we op in opdracht 2.
 Een goede backend is overzichtelijk opgebouwd. Met een apart model zorgen we ervoor dat alle database-acties voor 
 studenten op één plek staan. Dit maakt je code herbruikbaar en overzichtelijk.
 
-Het model zorgt ervoor dat:
-* Je routes (bijvoorbeeld in `app.py`) eenvoudiger blijven. 
-* Je straks makkelijk functies kunt toevoegen, zoals het ophalen van een lijst met studenten.
-
 ### Waarom hebben we een model class zoals Student nodig?
 Wanneer je een backend bouwt, wil je graag dat je code netjes gestructureerd is. Hier zijn een paar redenen waarom we een aparte `Student` class gebruiken:
 
@@ -224,7 +220,7 @@ weg hebben van werkplaats docenten). Het zou heel handig zijn om in de browser e
 
 ### Opdracht 2.1 - Het toevoegen van de get_all_students functie
 
-Schrijf in student.py een functie get_all_students die een lijst met alle studenten ophaalt.
+Schrijf in `student.py` een functie get_all_students die een lijst met alle studenten ophaalt.
 
 **Hints:**
 * Gebruik de SQL-query `SELECT * FROM students` om alle rijen uit de tabel te halen.
@@ -273,7 +269,7 @@ Wat doet deze code?
         De cursor is een object dat je gebruikt om SQL-commando's uit te voeren.
         Het is een soort "pen" waarmee je queries schrijft en uitvoert op de database.
         Je gebruikt `cursor.execute()` om een query uit te voeren en, bijvoorbeeld, gegevens toe te voegen of op te halen.
-* **SQL-query:** De query `SELECT * FROM students`` selecteert alle rijen uit het students tabel.
+* **SQL-query:** De query `SELECT * FROM students` selecteert alle rijen uit het students tabel.
 * **commit():** Hiermee worden de wijzigingen definitief opgeslagen in de database. Zonder deze stap worden de wijzigingen 
 niet bewaard.
 * **cursor.fetchall()**: de cursor returnt ook de resultaat van je SQL-query.In dit geval returnt die alles. De veel 
@@ -315,14 +311,14 @@ def list_students():
 * **HTML retourneren:** De HTML-string met alle studenten wordt teruggestuurd naar de browser, inclusief een link naar de details van een student die we gaan gebruiken voor opdracht 3.
 
 > Onthoud: POST requests zijn om gegevens naar de database te sturen, GET requests zijn om gegevens van de database te krijgen. 
-Verbeeld het als een postbode die pakketjes bezorgd of levert.
+Verbeeld het als een postvakje waarin je brieven (gegevens die in de database moeten) kan POSTEN (POST - brief in iemand zijn postvak stoppen) of kan KRIJGEN (GET - briefen uit je postvakje halen).
 </details>
 
 ---
 
 Zodra deze opdracht afgerond is kan je je Flask applicatie opstarten en het uitproberen. Dit kan op 2 manieren:
-1. Door naar `localhost:5000/students` te gaan
-2. Door een student toe te voegen via het formulier en daarna op `Studenten overzicht` te klikken.
+1. Door naar `localhost:5000/students` te gaan.
+2. Door naar `localhost:5000` te gaan en op de `studenten overzicht` link te klikken.
 
 Je studenten-overzicht zou er zo uit moeten zien:<br>
 ![student_overview](student_overview.png)
@@ -612,7 +608,7 @@ def save_form():
 
 Start nu je Flask applicatie op en vul wat studenten gegevens in je formulier. Als het goed is krijg je nu de details van 
 deze nieuwe student te zien door de `/students/<student_id>` route die al langer bestond.
-
+VOEG TOE
 
 ## **Goed gedaan!**
 
