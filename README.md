@@ -547,6 +547,10 @@ def save_form():
 ```
 </details>
 
+Start nu je Flask applicatie op en vul wat studenten gegevens in je formulier. Als het goed is krijg je nu de details van 
+deze nieuwe student te zien door de `/students/<student_id>` route die al langer bestond.
+
+
 ## **Goed gedaan!**
 
 Gefeliciteerd! 🎉 Je hebt zojuist je eerste Flask-backend gebouwd waarin je gegevens kunt opslaan, ophalen en weergeven. Dit is een belangrijke stap in het leren van webontwikkeling en vormt de basis voor veel real-world applicaties.
