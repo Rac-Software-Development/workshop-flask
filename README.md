@@ -5,18 +5,24 @@ en gebruikt templates om gegevens te presenteren.
 
 ## **Inhoudsopgave**
 
+## **Inhoudsopgave**
+
 1. [Introductie](#introductie)
 2. [Doelen](#doelen)
 3. [Project Structuur](#project-structuur)
-4. [Opdracht 1 - Maak een student model](#opdracht-1---maak-een-student-model)
+4. [Opdracht 0 - Setup voor Flask](#opdracht-0---setup-voor-flask)
+   - [Opdracht 0.1 - Installeer Flask](#opdracht-01---installeer-flask)
+   - [Opdracht 0.2 - Controleer de Flask-installatie](#opdracht-02---controleer-de-flask-installatie)
+   - [Opdracht 0.3 - Start de applicatie](#opdracht-03---start-de-applicatie)
+5. [Opdracht 1 - Maak een student model](#opdracht-1---maak-een-student-model)
    - [Opdracht 1.1 - Het maken van de Student class](#opdracht-11---het-maken-van-de-student-class)
-5. [Opdracht 2 - Alle studenten weergeven](#opdracht-2---alle-studenten-weergeven)
+6. [Opdracht 2 - Alle studenten weergeven](#opdracht-2---alle-studenten-weergeven)
    - [Opdracht 2.1 - Het toevoegen van de get_all_students functie](#opdracht-21---het-toevoegen-van-de-get_all_students-functie)
    - [Opdracht 2.2 - Het aanmaken van een route voor /students in app.py](#opdracht-22---het-aanmaken-van-een-route-voor-students-in-apppy)
-6. [Opdracht 3 - Het weergeven van 1 student](#opdracht-3---het-weergeven-van-1-student)
+7. [Opdracht 3 - Het weergeven van 1 student](#opdracht-3---het-weergeven-van-1-student)
    - [Opdracht 3.1 - Het toevoegen van de get_single_student functie](#opdracht-31---het-toevoegen-van-de-get_single_student-functie)
    - [Opdracht 3.2 - Het aanmaken van een nieuwe route in app.py](#opdracht-32---het-aanmaken-van-een-nieuwe-route-in-apppy)
-7. [Opdracht 4 - Het toevoegen van een student in de database](#opdracht-4---het-toevoegen-van-een-student-in-de-database)
+8. [Opdracht 4 - Het toevoegen van een student in de database](#opdracht-4---het-toevoegen-van-een-student-in-de-database)
    - [Opdracht 4.1 - Het toevoegen van een save_student functie](#opdracht-41---het-toevoegen-van-een-save_student-functie)
    - [Opdracht 4.2 - Het aanpassen van save_form in app.py](#opdracht-42---het-aanpassen-van-save_form-in-apppy)
    - [Opdracht 4.3 - Kleine aanpassingen](#opdracht-43---kleine-aanpassingen)
@@ -131,6 +137,37 @@ moment dat je de applicatie voor het eerst opstart.
 Dit HTML-bestand bevat een formulier waarmee je gegevens van een nieuwe student kunt invoeren. Hopelijk komt dit je bekend
 voor door de HTML workshop van verleden week.
 
+
+## Opdracht 0 - Setup voor Flask
+In deze opdracht installeren we Flask en starten we de applicatie direct vanuit PyCharm. We doen dit zodat je weet hoe je
+een Flask applicatie moet opstarten EN zodat we zeker weten dat Flask werkt op je laptop.
+
+### Opdracht 0.1 - Installeer Flask
+* Open PyCharm en zorg dat dit project is gecloned en geopend.
+* Open de terminal in PyCharm (View > Tool Windows > Terminal) of gebruik het tabblad "Terminal" onderin. 
+* Installeer Flask met het volgende commando:
+```bash
+pip install flask
+```
+### Opdracht 0.2 - Controleer de Flask-installatie
+Controleer of Flask correct is geïnstalleerd door in de terminal het volgende commando uit te voeren:
+```bash
+pip show flask
+```
+
+Je zou een resultaat moeten zien zoals dit:
+```bash
+Name: Flask
+Version: X.X.X
+Summary: A simple framework for building complex web applications.
+Location: ...
+```
+
+### Opdracht 0.3 - Start de applicatie
+Zorg ervoor dat je app.py niet aanpast naar clonen, en start de Flask applicatie door op het start-knopje te klikken rechtsboven.
+Zodra je terminal aangeeft dat `127.0.0.1:5000` running is, kan je op de link klikken en dan zie je de form van `hello_world.html`, want die zit op dit moment op root (dus route `/`).
+De studenten overzicht link werkt niet. Dat lossen we op in opdracht 2.
+
 ## Opdracht 1 - Maak een student model
 Een goede backend is overzichtelijk opgebouwd. Met een apart model zorgen we ervoor dat alle database-acties voor 
 studenten op één plek staan. Dit maakt je code herbruikbaar en overzichtelijk.
@@ -165,7 +202,6 @@ van de database te veranderen.
 * **self.db = Database(db_path):** Hiermee maak je een object van type Database, zodat je straks eenvoudig 
 database-functies kunt gebruiken.
 </details>
-
 
 ## Opdracht 2 - Alle studenten weergeven
 `database.py`. maakt na de eerste keer opstarten voor ons een `students` table aan met 4 students erin (die toevallig heel veel 
