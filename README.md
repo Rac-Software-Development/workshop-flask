@@ -166,6 +166,7 @@ van de database te veranderen.
 database-functies kunt gebruiken.
 </details>
 
+
 ## Opdracht 2 - Alle studenten weergeven
 `database.py`. maakt na de eerste keer opstarten voor ons een `students` table aan met 4 students erin (die toevallig heel veel 
 weg hebben van werkplaats docenten). Het zou heel handig zijn om in de browser een soort van overview of dashboard te hebben om deze allemaal in te zien.
@@ -266,6 +267,8 @@ def list_students():
 Verbeeld het als een postbode die pakketjes bezorgd of levert.
 </details>
 
+---
+
 Zodra deze opdracht afgerond is kan je je Flask applicatie opstarten en het uitproberen. Dit kan op 2 manieren:
 1. Door naar `localhost:5000/students` te gaan
 2. Door een student toe te voegen via het formulier en daarna op `Studenten overzicht` te klikken.
@@ -308,6 +311,7 @@ Schrijf een functie in `student.py` die de gegevens van een specifieke student o
 
 </details>
 
+
 ### Opdracht 3.2 - Het aanmaken van een nieuwe route in app.py
 Maak in `app.py` een nieuwe route `/students/<id>`. Deze route toont de details van een specifieke student op basis van het ID dat is meegegeven in de URL.
 
@@ -349,6 +353,8 @@ Wat gebeurt er hier?
 * **HTML bouwen:** De details van de student worden getoond in een overzichtelijke HTML-string.
 
 </details>
+
+---
 
 Je kan dit nu testen door je flask applicatie op te starten en naar `localhost:5000/students/1` te gaan. Dan zie je dit:<br>
 VOEG TOE.
@@ -471,6 +477,8 @@ def save_form():
 * **HTML teruggeven:** Na het opslaan stuurt de functie een eenvoudig bevestigingsbericht terug naar de gebruiker.
 </details>
 
+---
+
 Start je Flask applicatie op na het afronden van deze opdracht. Als je nu gegevens van een student invult en op de submit 
 knop klikt krijg je als het goed is het volgende te zien:<br>
 ![1](save_form.png) 
@@ -517,6 +525,8 @@ def save_student(self, first_name, last_name, years_on_school, date_of_birth, em
 * **cursor.lastrowid**: Dit returnt het ID van de rij die zojuist aan de database is toegevoegd. Dit is belangrijk voor de volgende stap.
 </details>
 
+---
+
 **4.3.2 - Pas de save_form-route aan**
 In `app.py` moet je de `save_form`-route aanpassen zodat de gebruiker wordt doorgestuurd naar de detailpagina van de toegevoegde student.
 
@@ -546,6 +556,8 @@ def save_form():
     return redirect(f'/students/{student_id}')
 ```
 </details>
+
+---
 
 Start nu je Flask applicatie op en vul wat studenten gegevens in je formulier. Als het goed is krijg je nu de details van 
 deze nieuwe student te zien door de `/students/<student_id>` route die al langer bestond.
