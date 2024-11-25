@@ -25,6 +25,7 @@ class Student:
         con = self.db.connect()
         cursor = con.cursor()
         cursor.execute("SELECT * FROM students WHERE id = ?", (student_id,))
+        con.commit()
         return cursor.fetchone()
 
     def get_all_students(self):
@@ -34,4 +35,5 @@ class Student:
         con = self.db.connect()
         cursor = con.cursor()
         cursor.execute("SELECT * FROM students")
+        con.commit()
         return cursor.fetchall()

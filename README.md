@@ -3,6 +3,24 @@ In deze workshop bouw je een backend-applicatie om studenten te beheren. Deze wo
 We gaan stap voor stap door het proces: je implementeert een studentenmodel, voegt routes toe om studenten op te slaan en weer te geven, 
 en gebruikt templates om gegevens te presenteren.
 
+## **Inhoudsopgave**
+
+1. [Introductie](#introductie)
+2. [Doelen](#doelen)
+3. [Project Structuur](#project-structuur)
+4. [Opdracht 1 - Maak een student model](#opdracht-1---maak-een-student-model)
+   - [Opdracht 1.1 - Het maken van de Student class](#opdracht-11---het-maken-van-de-student-class)
+5. [Opdracht 2 - Alle studenten weergeven](#opdracht-2---alle-studenten-weergeven)
+   - [Opdracht 2.1 - Het toevoegen van de get_all_students functie](#opdracht-21---het-toevoegen-van-de-get_all_students-functie)
+   - [Opdracht 2.2 - Het aanmaken van een route voor /students in app.py](#opdracht-22---het-aanmaken-van-een-route-voor-students-in-apppy)
+6. [Opdracht 3 - Het weergeven van 1 student](#opdracht-3---het-weergeven-van-1-student)
+   - [Opdracht 3.1 - Het toevoegen van de get_single_student functie](#opdracht-31---het-toevoegen-van-de-get_single_student-functie)
+   - [Opdracht 3.2 - Het aanmaken van een nieuwe route in app.py](#opdracht-32---het-aanmaken-van-een-nieuwe-route-in-apppy)
+7. [Opdracht 4 - Het toevoegen van een student in de database](#opdracht-4---het-toevoegen-van-een-student-in-de-database)
+   - [Opdracht 4.1 - Het toevoegen van een save_student functie](#opdracht-41---het-toevoegen-van-een-save_student-functie)
+   - [Opdracht 4.2 - Het aanpassen van save_form in app.py](#opdracht-42---het-aanpassen-van-save_form-in-apppy)
+   - [Opdracht 4.3 - Kleine aanpassingen](#opdracht-43---kleine-aanpassingen)
+
 ## Doelen
 Na deze workshop kun je:
 * Gegevens opslaan in een database met behulp van een model. 
@@ -148,19 +166,19 @@ van de database te veranderen.
 database-functies kunt gebruiken.
 </details>
 
-## Opdracht 2 - Het toevoegen van een student in de database
-In `hello_world.html` staat een formulier die nu alleen gegevens weergeeft die je net hebt ingevuld. 
-Je wilt liever de gegevens van studenten opslaan in een database zodat je ze later weer kan gebruiken voor andere dingen. 
-In deze opdracht maak je een functie waarmee je een student kunt toevoegen aan de database.
+## Opdracht 2 - Alle studenten weergeven
+`database.py`. maakt na de eerste keer opstarten voor ons een `students` table aan met 4 students erin (die toevallig heel veel 
+weg hebben van werkplaats docenten). Het zou heel handig zijn om in de browser een soort van overview of dashboard te hebben om deze allemaal in te zien.
 
-### Opdracht 2.1 - Het toevoegen van een save_student functie
-Schrijf een functie in `student.py` waarmee je een student toevoegt aan de database. Deze functie voert een SQL-query 
-uit om de gegevens van een student op te slaan.
+### Opdracht 2.1 - Het toevoegen van de get_all_students functie
+
+Schrijf in student.py een functie get_all_students die een lijst met alle studenten ophaalt.
 
 **Hints:**
-* Gebruik de SQL-query (en vul het aan): `INSERT INTO students (...) VALUES (...)`.
-* Roep `commit()` aan na de query om de wijzigingen op te slaan in de database.
-* Kijk naar `hello_world.html` om te zien welke informatie je moet opslaan
+* Gebruik de SQL-query `SELECT * FROM students` om alle rijen uit de tabel te halen.
+* Gebruik de cursor om je SQL-query uit te voeren.
+* Roep `con.commit()` aan na de query om de wijzigingen op te slaan in de database.
+* Gebruik de return functie `fetchall()` op cursor om alle rijen uit de database terug te krijgen.
 
 <details><summary><strong>Geen idee waar je moet beginnen?</strong></summary>
 De database aanroepen vanuit een model class is heel makkelijk en constant hetzelfde (op de query en return type na).
@@ -179,6 +197,181 @@ Hier is een template die je kan hergebruiken zo vaak als je wilt in een model cl
         # GEEN return is ook oke als je alleen iets wilt opslaan in de database
 ```
 </details>
+
+<details><summary><strong>Oplossing: Klik hier om te openen</strong></summary>
+
+```python
+def get_all_students(self):
+    """
+    Retrieve all students from the database.
+    """
+    con = self.db.connect()
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM students")
+    con.commit()   
+    return cursor.fetchall()
+```
+
+Wat doet deze code?
+* **con (connection)**:
+        Dit is de verbinding met de database. Met deze verbinding kunnen we queries uitvoeren en resultaten ophalen.
+        De verbinding wordt gemaakt met de `connect()`-functie van `database.py`.
+        Door `self.db.connect()` te gebruiken, sluiten we de verbinding automatisch af na gebruik.
+* **cursor**:
+        De cursor is een object dat je gebruikt om SQL-commando's uit te voeren.
+        Het is een soort "pen" waarmee je queries schrijft en uitvoert op de database.
+        Je gebruikt `cursor.execute()` om een query uit te voeren en, bijvoorbeeld, gegevens toe te voegen of op te halen.
+* **SQL-query:** De query `SELECT * FROM students`` selecteert alle rijen uit het students tabel.
+* **commit():** Hiermee worden de wijzigingen definitief opgeslagen in de database. Zonder deze stap worden de wijzigingen 
+niet bewaard.
+* **cursor.fetchall()**: de cursor returnt ook de resultaat van je SQL-query.In dit geval returnt die alles. De veel 
+voorkomende return types staan beschreven in de `Geen idee waar je moet beginnen?` gedeelte hierboven.
+</details>
+
+### Opdracht 2.2 - Het aanmaken van een route voor /students in app.py
+Je gaat een nieuwe route toevoegen in `app.py`. Deze route haalt alle studenten op met de functie `get_all_students` en toont de gegevens in een eenvoudige HTML-string. 
+In plaats van een lijst, gebruik je een reeks `<b>`-tags en `<br>`-tags om de studenteninformatie te presenteren.
+
+**Hints:**
+* Maak boven je routes een `student_model` object aan van class `Student` met de path naar de database als parameter
+* Maak een functie list_students aan in `app.py` met route `/students`, met methode GET om alle studenten mee op te vragen
+* Roep de functie die alle students returned in `student_model` op en plaats deze in een variabel
+* Gebruik een loop (for student in students) om door alle studenten heen te lopen.
+* Voeg `<b>` tags toe om specifieke informatie, zoals de naam en e-mail, te benadrukken.
+
+<details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
+
+```python
+from models.student import * #deze moet bij de imports van app.py
+
+student_model = Student('./databases/database.db') #deze hoort net onder de imports, boven de route functies
+
+@app.route('/students', methods=['GET'])
+def list_students():
+    students = student_model.get_all_students()
+
+    result = ""
+    for student in students:
+        result += f'<b>Naam:</b> {student['first_name']} {student['last_name']} - <a href="/students/{student['id']}"> Details </a><br>'
+    return result
+```
+
+**Wat gebeurt er hier?**
+* **Aanmaken van student_model:** vanuit dit Student object kan je nu alle functies in `student.py` aanroepen.
+* **Studenten ophalen:** De functie `get_all_students()` haalt een lijst van alle studenten op.
+* **HTML bouwen:** Met een for-loop worden de gegevens van elke student toegevoegd aan een string. De gegevens worden omgeven door `<b>`-tags voor opmaak. 
+* **HTML retourneren:** De HTML-string met alle studenten wordt teruggestuurd naar de browser, inclusief een link naar de details van een student die we gaan gebruiken voor opdracht 3.
+
+> Onthoud: POST requests zijn om gegevens naar de database te sturen, GET requests zijn om gegevens van de database te krijgen. 
+Verbeeld het als een postbode die pakketjes bezorgd of levert.
+</details>
+
+Zodra deze opdracht afgerond is kan je je Flask applicatie opstarten en het uitproberen. Dit kan op 2 manieren:
+1. Door naar `localhost:5000/students` te gaan
+2. Door een student toe te voegen via het formulier en daarna op `Studenten overzicht` te klikken.
+
+Je studenten-overzicht zou er zo uit moeten zien:<br>
+![student_overview](student_overview.png)
+
+## Opdracht 3 - Het weergeven van 1 student
+We hebben nu een overview / dashboard in `/students` maar het zou ook fijn zijn als we erop kunnen klikken en de details kunnen 
+zien van de studenten in het dashboard. In deze opdracht pas je je code aan en voeg je wat code toe zodat je een student kan aanklikken
+en de volledige gegevens kunt weergeven op een HTML-pagina. Hiervoor gaan we een nieuwe functie aanmaken in `student.py` en ook een nieuwe route in `app.py`.
+
+### Opdracht 3.1 - Het toevoegen van de get_single_student functie
+
+Schrijf een functie in `student.py` die de gegevens van een specifieke student ophaalt uit de database. De functie accepteert het ID van de student als parameter.
+
+**Hints:**
+* Gebruik de SQL-query `SELECT * FROM students WHERE id = ?`.
+* Gebruik de cursor om je SQL-query uit te voeren.
+* Roep `con.commit()` aan na de query om de wijzigingen op te slaan in de database.
+* Gebruik `cursor.fetchone()` om één rij uit de database op te halen.
+* Gebruik het `Geen idee waar je moet beginnen?` gedeelte 2.1 als spiekbrief voor je functie
+
+<details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
+
+```python
+    def get_single_student(self, student_id):
+        """
+        Retrieve a single student's details from the database by ID.
+        """
+        con = self.db.connect()
+        cursor = con.cursor()
+        cursor.execute("SELECT * FROM students WHERE id = ?", (student_id,))
+        return cursor.fetchone()
+``` 
+**Wat doet deze code?**
+* **SQL-query:** `SELECT * FROM students WHERE id = ?` zoekt naar een student met het opgegeven ID.
+* **cursor.fetchone():** Haalt de eerste (en in dit geval enige) rij op die voldoet aan de query.
+* **Parameters:** Het gebruik van `?` en `(student_id,)` zorgt ervoor dat je op een specifiek id kan zoeken die door `app.py` meegegeven wordt.
+
+</details>
+
+### Opdracht 3.2 - Het aanmaken van een nieuwe route in app.py
+Maak in `app.py` een nieuwe route `/students/<id>`. Deze route toont de details van een specifieke student op basis van het ID dat is meegegeven in de URL.
+
+**Hints:**
+* Zorg dat je de parameter `student_id` aan je route meegeeft in de functie.
+* Gebruik de functie `get_single_student` uit `student.py` om de gegevens van de student op te halen.
+* Bouw een eenvoudige HTML-string om de studentgegevens weer te geven.
+* Maak een `<a href>` in HTML naar /students voor student overzicht
+* Maak een `<a href>` in HTML naar / waar we in opdracht 4 aan gaan werken aan het HTML formulier.
+
+<details><summary><strong>Oplossing: Klik hier om te openen</strong></summary>
+
+```python
+@app.route('/students/<student_id>', methods=['GET'])
+def show_student(student_id):
+    # Fetch the details of the student
+    student = student_model.get_single_student(student_id)
+
+    # Build an HTML string with the student details
+    result = f"""
+    <h1>Student Details</h1>
+    <p>
+        ID: {student['id']}<br>
+        Voornaam: {student['first_name']}<br>
+        Achternaam: {student['last_name']}<br>
+        Schooljaar: {student['years_on_school']}<br>
+        Geboortedatum: {student['date_of_birth']}<br>
+        Email: {student['email']}
+    </p>
+    <a href="/">Terug naar formulier</a><br>
+    <a href="/students">Studenten overzicht</a><br>
+    """
+    return result
+```
+
+Wat gebeurt er hier?
+* **Route met parameter:** De student_id-parameter uit de URL wordt automatisch doorgegeven aan de functie.
+* **Gegevens ophalen:** Met get_single_student(student_id) wordt de juiste student opgehaald.
+* **HTML bouwen:** De details van de student worden getoond in een overzichtelijke HTML-string.
+
+</details>
+
+Je kan dit nu testen door je flask applicatie op te starten en naar `localhost:5000/students/1` te gaan. Dan zie je dit:<br>
+VOEG TOE.
+
+
+
+## Opdracht 4 - Het toevoegen van een student in de database
+In `hello_world.html` staat een formulier die nu alleen gegevens weergeeft die je net hebt ingevuld, deze formulier wordt
+meteen weergegeven als je de applicatie start omdat die in de root (route `/`) staat.  Je wilt liever de gegevens van studenten opslaan in de database zodat je ze later weer kan gebruiken voor andere dingen, 
+en je ermee kan werken in je dashboard. In deze opdracht maak je een functie waarmee je een student kunt toevoegen aan 
+de database.
+
+### Opdracht 4.1 - Het toevoegen van een save_student functie
+Schrijf een functie in `student.py` waarmee je een student toevoegt aan de database. Deze functie voert een SQL-query 
+uit om de gegevens van een student op te slaan.
+
+**Hints:**
+* Gebruik de SQL-query (en vul het aan): `INSERT INTO students (...) VALUES (...)`.
+* Gebruik de cursor om je SQL query uit te voeren.
+* Roep `con.commit()` aan na de query om de wijzigingen op te slaan in de database.
+* Kijk naar `hello_world.html` om te zien welke informatie je moet opslaan
+* Gebruik het `Geen idee waar je moet beginnen?` gedeelte in 2.1 als spiekbriefje voor je functie.
+
 <details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
 
 In het bestand `hello_world.html` staat een formulier waarmee gebruikers gegevens kunnen invoeren. Dit formulier stuurt 
@@ -203,7 +396,6 @@ de ingevulde gegevens naar de route `/save-form` in je `app.py`. Hier is het for
 ```
 
 In `student.py` wil je deze gegevens meegeven als een parameter (wel in snake_case, want dat moet volgens de Python regeltjes):
-
 ```python
 
     def save_student(self, first_name, last_name, years_on_school, date_of_birth, email, password):
@@ -217,23 +409,9 @@ In `student.py` wil je deze gegevens meegeven als een parameter (wel in snake_ca
             (first_name, last_name, years_on_school, date_of_birth, email, password))
         con.commit()
 ```
-
-Wat doet deze code?
-* **con (connection)**:
-        Dit is de verbinding met de database. Met deze verbinding kunnen we queries uitvoeren en resultaten ophalen.
-        De verbinding wordt gemaakt met de `connect()`-functie van `database.py`.
-        Door `self.db.connect()` te gebruiken, sluiten we de verbinding automatisch af na gebruik.
-* **cursor**:
-        De cursor is een object dat je gebruikt om SQL-commando's uit te voeren.
-        Het is een soort "pen" waarmee je queries schrijft en uitvoert op de database.
-        Je gebruikt `cursor.execute()` om een query uit te voeren en, bijvoorbeeld, gegevens toe te voegen of op te halen.
-* **SQL-query:** De query `INSERT INTO students (...) VALUES (...)` voegt een nieuwe rij met gegevens toe aan de tabel 
-students in de database.
-* **commit():** Hiermee worden de wijzigingen definitief opgeslagen in de database. Zonder deze stap worden de wijzigingen 
-niet bewaard.
 </details>
 
-### Opdracht 2.2 - Het aanpassen van save_form in app.py
+### Opdracht 4.2 - Het aanpassen van save_form in app.py
 De route `/save-form` in `app.py` wordt aangeroepen als een gebruiker het formulier in `hello_world.html` invult en op de submit knop klikt. 
 Op dit moment doet de functie niet meer dan de ingevoerde voornaam terugsturen als tekst. Om de gegevens echt op te slaan 
 in de database, moet de functie aangepast worden.
@@ -255,9 +433,6 @@ def save_form():
 * **first_name = request.form['firstName']:** Hier wordt de waarde van het invoerveld firstName opgehaald.
 * **print(request.form):** Print alle gegevens uit het formulier naar de console. 
 * **return first_name:** Stuurt alleen de opgehaalde firstName terug naar de browser.
-
-Onthoud: POST requests zijn om gegevens naar de database te sturen, GET requests zijn om gegevens van de database te krijgen. 
-Verbeeld het als een postbode die pakketjes bezorgd of levert.
 </details>
 
 **Je gaat deze functie uitbreiden zodat:**
@@ -274,35 +449,25 @@ Verbeeld het als een postbode die pakketjes bezorgd of levert.
 <details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
 
 ```python
-
-student_model = Student('./databases/database.db') #deze hoort boven de / route
-
 @app.route('/save-form', methods=['POST'])
 def save_form():
     # Collect form data from the request
-    first_name = request.form.get('firstName')
-    last_name = request.form.get('lastName')
-    years_on_school = int(request.form.get('yearsOnSchool', 0))  # Convert to int for years on school
-    date_of_birth = request.form.get('dateOfBirth')
-    email = request.form.get('email')
-    password = request.form.get('password')
+    first_name = request.form['firstName']
+    last_name = request.form['lastName']
+    years_on_school = request.form['yearsOnSchool']
+    date_of_birth = request.form['dateOfBirth']
+    email = request.form['email']
+    password = request.form['password']
 
     # Save the new student record in the database
     student_model.save_student(first_name, last_name, years_on_school, date_of_birth, email, password)
 
     return '<p>Student succesvol aangemaakt</p'
-
-```
-
-Als je nog wat packages mist dan zijn dat waarschijnlijk:
-```python
-from flask import request
-from models.student import *
 ```
 
 **Wat doet deze aangepaste functie?**
-* **Gegevens ophalen:** Alle invoervelden uit het formulier worden opgehaald met request.form.get().
-* **save_student aanroepen:** De opgehaalde gegevens worden doorgegeven aan de save_student-functie om de student op te slaan.
+* **Gegevens ophalen:** Alle invoervelden uit het formulier worden opgehaald met `request.form[]`.
+* **save_student aanroepen:** De opgehaalde gegevens worden doorgegeven aan de `save_student`-functie om de student op te slaan.
 * **HTML teruggeven:** Na het opslaan stuurt de functie een eenvoudig bevestigingsbericht terug naar de gebruiker.
 </details>
 
@@ -310,190 +475,77 @@ Start je Flask applicatie op na het afronden van deze opdracht. Als je nu gegeve
 knop klikt krijg je als het goed is het volgende te zien:<br>
 ![1](save_form.png) 
 
-Als je de database-viewer (View -> Tool Windows -> Database) opent hier in PyCharm zie je de gegevens nu ook in het 
-students tabel staan door met je rechtermuisknop op het students tabel te klikken en daarna op Edit Data:<br>
-![database_overview](db_view.png)
+Als je naar `/students` gaat zie je nu dat de nieuwe student toegevoegd is:<br>
+VOEG TOE
 
-Als je de database niet in de lijst ziet staan bij het Database-tabje, klik dan op het plusje (+), dan op `Data Source from Path` en selecteer
-dan database.db in de databases folder. 
+### Opdracht 4.3 - Kleine aanpassingen
+Zo'n `<p>` tag dat zegt dat een student is aangemaakt is handig, maar het kan beter. 
+We kunnen de /students/<student_id> route inzetten om meteen de details van de student weer te geven nadat de student 
+is aangemaakt. Hiervoor moeten we een cursor return functie toevoegen aan de `save_student` functie in `student.py`, en 
+wat kleine aanpassingen maken in de `save_form` functie in `app.py`
 
-## Opdracht 3 - Het weergeven van 1 student
-Tot nu toe sla je gegevens van een student op, maar je hebt geen eenvoudige manier om te controleren of de opgeslagen 
-gegevens correct zijn. In deze opdracht pas je je code aan en voeg je wat code toe zodat je na het opslaan de gegevens van de student
-die je hebt ingevuld kunt weergeven op een HTML-pagina. Dit helpt niet alleen bij het testen van je applicatie, maar 
-laat ook zien hoe je gegevens 1 persoon uit de database kunt ophalen.
+**4.3.1 - Pas de save_student-functie aan**
+In `student.py` moet je de `save_student`-functie aanpassen zodat deze het ID van de nieuw toegevoegde student returnt. 
+Dit ID kunnen we later gebruiken voor de `students/<student_id>` route naar de detailpagina.
 
-### Opdracht 3.1 - Het toevoegen van de get_single_student functie
-In `student.py` hebben we een get_single_student functie nodig die een id parameter accepteert om de student te kunnen zoeken in de database.
-
-Schrijf een functie in `student.py` die de gegevens van een specifieke student ophaalt uit de database. De functie accepteert het ID van de student als parameter.
-
-**Hints:**
-* Gebruik de SQL-query `SELECT * FROM students WHERE id = ?`.
-* Gebruik cursor.fetchone() om één rij uit de database op te halen.
-* Gebruik het 'Geen idee waar je moet beginnen?' 2.1 als spiekbrief voor je functie
+Hints:
+* Voeg de cursor return functie toe die het ID van de nieuwste student returnt.
+* Zorg ervoor dat de rest van de functie hetzelfde blijft (de INSERT-query en het committen van de wijzigingen).
+* Kijk naar het spiekbriefje bij het `Geen idee waar je moet beginnen?`gedeelte van 2.1
 
 <details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
 
 ```python
-    def get_single_student(self, student_id):
-        """
-        Retrieve a single student's details from the database by ID.
-        """
-        con = self.db.connect()
-        cursor = con.cursor()
-        cursor.execute("SELECT * FROM students WHERE id = ?", (student_id,))
-        return cursor.fetchone()
-``` 
-**Wat doet deze code?**
-* **SQL-query:** `SELECT * FROM students WHERE id = ?` zoekt naar een student met het opgegeven ID.
-* **cursor.fetchone():** Haalt de eerste (en in dit geval enige) rij op die voldoet aan de query.
-* **Parameters:** Het gebruik van `?` en `(student_id,)` zorgt ervoor dat je op een specifiek id kan zoeken die door `app.py` meegegeven wordt.
-
-</details>
-
-### Opdracht 3.2 - Het aanpassen van save_form in app.py
-Je gaat de functie `save_form` in `app.py` aanpassen zodat deze na het opslaan van een student:
-* Het ID van de opgeslagen student ophaalt zodra deze is opgeslagen in de database.
-* De details van die student toont in een eenvoudige HTML-string.
-
-**Hints:**
-* Pas de functie `save_student` in `student.py` aan zodat deze het ID van de nieuw opgeslagen student retourneert.
-**<br><br>In `app.py`:**
-* Voeg een variabel toe aan `student_model.save_student` zodat hier de ID van deze student kan plaatsen.
-* Gebruik de nieuwe `get_single_student`-functie om de ID van de student alle gegevens op te halen en plaats deze in een variabel.  
-* Bouw een HTML-string waarin de details van de student worden getoond.
-* Geef in de HTML ook twee `<a>` links mee. 1 naar `/` om terug te gaan naar het formulier, en 1 naar `/students` voor opdracht 4.
-
-<details> <summary><strong>Oplossing student.py: Klik hier om te openen</strong></summary>
-
-```python  
 def save_student(self, first_name, last_name, years_on_school, date_of_birth, email, password):
-        """
-        saves a new student to the database.
-        """
-        con = self.db.connect()
-        cursor = con.cursor()
-        cursor.execute(
-            "INSERT INTO students (first_name, last_name, years_on_school, date_of_birth, email, password) VALUES (?, ?, ?, ?, ?, ?)",
-            (first_name, last_name, years_on_school, date_of_birth, email, password))
-        con.commit()
-        return cursor.lastrowid
-```
-
-**Wat doet cursor.lastrowid?**
-* Dit retourneert het ID van de laatst toegevoegde rij in de database.
-* Hiermee kun je direct het ID van de zojuist opgeslagen student ophalen.
-</details>
-
-<details> <summary><strong>Oplossing app.py: Klik hier om te openen</strong></summary>
-
-```python
-@app.route('/save-form', methods=['POST'])
-def save_form():
-    # Collect form data from the request
-    first_name = request.form.get('firstName')
-    last_name = request.form.get('lastName')
-    years_on_school = int(request.form.get('yearsOnSchool', 0))  # Convert to int for years on school
-    date_of_birth = request.form.get('dateOfBirth')
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-    # Save the new student record in the database
-    student_id = student_model.save_student(first_name, last_name, years_on_school, date_of_birth, email, password)
-    student_added = student_model.get_single_student(student_id)
-
-    result = f"""
-    <h1>Student Succesvol Toegevoegd</h1>
-    <p>
-        ID: {student_added['id']}<br>
-        Voornaam: {student_added['first_name']}<br>
-        Achternaam: {student_added['last_name']}<br>
-        Jaren op school: {student_added['years_on_school']}<br>
-        Geboortedatum: {student_added['date_of_birth']}<br>
-        E-mail: {student_added['email']}
-    </p>
-    <a href="/">Terug naar formulier</a><br>
-    <a href="/students" Studenten overzicht</a><br>
     """
-
-    return result
-```
-**Wat gebeurt er hier?**
-* **student_id ophalen:** Na het opslaan van een student retourneert save_student het ID van de nieuwe rij. 
-* **Details ophalen:** Met get_single_student(student_id) worden de gegevens van de opgeslagen student opgehaald.
-* **HTML-string bouwen:** De gegevens worden getoond in een eenvoudige HTML-string.
-
-</details>
-
-Als je nu je Flask app opstart en gegevens invoert in je formulier zie je iets zoals dit:<br>
-![student details](student_detail.png)
-
-## Opdracht 4 - Alle studenten weergeven
-Soms wil je niet alleen één specifieke student bekijken, maar een overzicht van alle studenten in de database. 
-In deze laatste opdracht leer je hoe je alle studenten kunt ophalen en tonen. Dit is handig voor lijsten of dashboards 
-in je applicatie.
-
-### Opdracht 4.1 - Het toevoegen van de get_all_students functie
-Je gaat een functie schrijven in `student.py` die alle studenten ophaalt uit de database.
-
-**Hints:**
-* Gebruik de SQL-query `SELECT * FROM students` om alle rijen uit de tabel te halen.
-* Gebruik de juiste cursor return type om ALLE resultaten uit de Student table te returnen.
-* Gebruik indien nodig de `Weet niet waar ik moet beginnen` gedeelte in 2.1 als spiekbriefje voor je functie.
-
-<details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
-
-```python
-def get_all_students(self):
-    """
-    Retrieve all students from the database.
+    Save a new student to the database and return the new student's ID.
     """
     con = self.db.connect()
     cursor = con.cursor()
-    cursor.execute("SELECT * FROM students")
-    return cursor.fetchall()
+    cursor.execute(
+        """
+        INSERT INTO students (first_name, last_name, years_on_school, date_of_birth, email, password) 
+        VALUES (?, ?, ?, ?, ?, ?)
+        """, 
+        (first_name, last_name, years_on_school, date_of_birth, email, password)
+    )
+    con.commit()
+    return cursor.lastrowid  # Return the ID of the newly inserted student
 ```
-**Wat doet deze code?**
-* **SQL-query:** `SELECT * FROM students` haalt alle rijen en kolommen op uit de tabel students.
-* **cursor.fetchall():** Retourneert een lijst van alle rijen die door de query zijn gevonden. Elke rij wordt als een dictionary teruggegeven omdat we con.row_factory = sqlite3.Row gebruiken.
+
+**Wat verandert er?** 
+* **cursor.lastrowid**: Dit returnt het ID van de rij die zojuist aan de database is toegevoegd. Dit is belangrijk voor de volgende stap.
 </details>
 
-### Opdracht 4.2 - Het aanmaken van een route voor /students in app.py
-Je gaat een nieuwe route toevoegen in `app.py`. Deze route haalt alle studenten op met de functie `get_all_students` en toont de gegevens in een eenvoudige HTML-string. 
-In plaats van een lijst, gebruik je een reeks `<b>`-tags en `<br>`-tags om de studenteninformatie te presenteren.
+**4.3.2 - Pas de save_form-route aan**
+In `app.py` moet je de `save_form`-route aanpassen zodat de gebruiker wordt doorgestuurd naar de detailpagina van de toegevoegde student.
 
 **Hints:**
-* Maak een functie list_students aan in `app.py` met route `/students`. Dit is een functie waar je alleen iets wilt KRIJGEN van de database.
-* Roep de functie die alle students returned in `student_model` op en plaats deze in een variabel
-* Gebruik een loop (for student in students) om door alle studenten heen te lopen.
-* Voeg `<b>` tags toe om specifieke informatie, zoals de naam en e-mail, te benadrukken.
+* Roep de aangepaste `save_student`-functie aan en sla het gereturnde ID op in een variabele.
+* Import de redirect-functie van Flask en gebruik deze om de gebruiker door te sturen naar `/students/<student_id>` als de student aangemaakt is.
+* Zorg dat de route `/students/<student_id>` al bestaat (Opdracht 3.2).
 
 <details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
 
 ```python
-@app.route('/students', methods=['GET'])
-def list_students():
-    students = student_model.get_all_students()
+from flask import redirect # dit moet bij de rest van de imports
 
-    result = ""
-    for student in students:
-        result += '<b>Naam:</b>' + student['first_name'] + ' ' + student['last_name'] + ' <b>Email:</b>' + student['email'] + '<br>'
-    return result
+@app.route('/save-form', methods=['POST'])
+def save_form():
+    # Collect form data from the request
+    first_name = request.form['firstName']
+    last_name = request.form['lastName']
+    years_on_school = request.form['yearsOnSchool']
+    email = request.form['email']
+    password = request.form['password']
+
+    # Save the new student record in the database and get the new ID
+    student_id = student_model.save_student(first_name, last_name, years_on_school, date_of_birth, email, password)
+
+    # Redirect to the student detail page
+    return redirect(f'/students/{student_id}')
 ```
-
-**Wat gebeurt er hier?**
-* **Studenten ophalen:** De functie get_all_students() haalt een lijst van alle studenten op.
-* **HTML bouwen:** Met een for-loop worden de gegevens van elke student toegevoegd aan een string. De gegevens worden omgeven door `<b>`-tags voor opmaak. 
-* **HTML retourneren:** De HTML-string met alle studenten wordt teruggestuurd naar de browser.
 </details>
-
-Zodra deze opdracht afgerond is kan je je Flask applicatie opstarten en het uitproberen. Dit kan op 2 manieren:
-1. Door naar `localhost:5000/students` te gaan
-2. Door een student toe te voegen via het formulier en daarna op `Studenten overzicht` te klikken.
-
-Je studenten-overzicht zou er zo uit moeten zien:<br>
-![student_overview](student_overview.png)
 
 ## **Goed gedaan!**
 
