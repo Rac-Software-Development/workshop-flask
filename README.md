@@ -176,6 +176,21 @@ Het model zorgt ervoor dat:
 * Je routes (bijvoorbeeld in `app.py`) eenvoudiger blijven. 
 * Je straks makkelijk functies kunt toevoegen, zoals het ophalen van een lijst met studenten.
 
+### Waarom hebben we een model class zoals Student nodig?
+Wanneer je een backend bouwt, wil je graag dat je code netjes gestructureerd is. Hier zijn een paar redenen waarom we een aparte `Student` class gebruiken:
+
+1. **Alles op één plek houden:**
+   - Alle database-acties die met studenten te maken hebben, worden in de `Student` class geplaatst. Hierdoor hoef je niet overal in je code te zoeken als je iets wilt aanpassen.
+
+2. **Minder dubbele code:**
+   - Stel dat je op meerdere plekken studenten uit de database wilt ophalen. Met een `Student` class hoef je de database-logica maar één keer te schrijven. Daarna kun je overal de functies uit de class gebruiken.
+
+3**Toekomstbestendig:**
+   - Als je later nieuwe dingen aan je applicatie toevoegt (zoals een extra veld in de database of nieuwe functies), hoef je alleen de `Student` class aan te passen. De rest van je code blijft werken.
+
+4**Best practices:**
+   - Het gebruik van een model class is een standaardmanier om grotere applicaties te bouwen. Dit maakt je project niet alleen professioneler, maar ook veel makkelijker te onderhouden.
+
 ### Opdracht 1.1 - Het maken van de Student class
 * Maak een map `models` als deze nog niet bestaat.
 * Maak in deze map een bestand met de naam `student.py`.
