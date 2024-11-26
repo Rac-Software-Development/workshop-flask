@@ -1,12 +1,8 @@
 from flask import Flask
 from flask import render_template
 from flask import request
-from databases.database import Database
 
 app = Flask(__name__)
-
-db = Database('databases/database.db')
-db.setup_student_table()
 
 @app.route('/')
 def hello_world():
