@@ -5,8 +5,6 @@ en gebruikt templates om gegevens te presenteren.
 
 ## **Inhoudsopgave**
 
-## **Inhoudsopgave**
-
 1. [Introductie](#introductie)
 2. [Doelen](#doelen)
 3. [Project Structuur](#project-structuur)
