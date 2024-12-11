@@ -236,7 +236,7 @@ Wat doet deze code?
 * Geeft de database path door. Hierdoor zal Student class `database.py` oproepen, zodat die dan weer de `database.db` file kan aanmaken als deze nog niet bestaat.
 </details>
 
-Het zou heel handig zijn om in de browser een soort van overview of dashboard te hebben om deze allemaal in te zien.
+Start nu je applicatie op. Je zal zien dat er nu een database.db file is aangemaakt. Nu dat er staat zou het heel handig zijn om in de browser een soort van overview of dashboard te hebben om deze studenten in weer te geven.
 
 ### Opdracht 2.1 - Het toevoegen van de get_all_students functie
 
