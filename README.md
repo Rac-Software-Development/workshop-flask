@@ -128,8 +128,7 @@ Wat doet dit bestand?
 
 ### 2. databases/database.db
 Dit is de SQLite-database die door `database.py` wordt aangemaakt en gebruikt. Hier ga jij ook al je gegevens zometeen in
-opslaan en ook oproepen. Je ziet deze db file de eerste keer niet. Deze wordt aangemaakt door de `database.py` op het 
-moment dat je de applicatie voor het eerst opstart.
+opslaan en ook oproepen. Je ziet deze db file de eerste keer niet. Deze wordt aangemaakt in opdracht 2.0.
 
 ### 3. templates/hello_world.html
 Dit HTML-bestand bevat een formulier waarmee je gegevens van een nieuwe student kunt invoeren. Hopelijk komt dit je bekend
@@ -215,8 +214,29 @@ database-functies kunt gebruiken.
 </details>
 
 ## Opdracht 2 - Alle studenten weergeven
-`database.py`. maakt na de eerste keer opstarten voor ons een `students` table aan met 4 students erin (die toevallig heel veel 
-weg hebben van werkplaats docenten). Het zou heel handig zijn om in de browser een soort van overview of dashboard te hebben om deze allemaal in te zien.
+`database.py` wordt niet vanzelf aangeroepen. Maar we willen wel dat het een database file aanmaakt ebneen `students` tabel aanmaaakt met 4 students erin (die toevallig heel veel 
+weg hebben van werkplaats docenten). Hiervoor moeten we het opstart-bestand (in dit geval `app.py`) duidelijk maken dat er een model bestaat die de database weet te vinden. Dus laten we dat eerst doen.
+
+### Opdracht 2.0 - Het importeren van de student model in app.py
+Importeer de `Student` class in `app.py`. Roep deze vervolgens op als een object genaamd `student_model` boven de bestaande routes.
+
+**Hints:**
+* Je kan een class NOOIT direct aaroepen. `Student.some_function()` zal nooit werken. Je moet het dus in een object variabel zetten als je functies wilt aanroepen in de toekomst.
+
+<details><summary><strong>Oplossing: Klik hier om te openen</strong></summary>
+
+```python
+from models.student import * #deze moet bij de imports van app.py
+
+student_model = Student('./databases/database.db') #deze hoort net onder de imports, boven de route functies
+```
+Wat doet deze code?
+* Importeert de `Student` class van `models.student`
+* Maakt een `student_model` object aan waardoor we nu functions uit de Student class kunnen aanroepen (zie je zometeen)
+* Geeft de database path door. Hierdoor zal Student class `database.py` oproepen, zodat die dan weer de `database.db` file kan aanmaken als deze nog niet bestaat.
+</details>
+
+Het zou heel handig zijn om in de browser een soort van overview of dashboard te hebben om deze allemaal in te zien.
 
 ### Opdracht 2.1 - Het toevoegen van de get_all_students functie
 
@@ -278,10 +298,9 @@ voorkomende return types staan beschreven in de `Geen idee waar je moet beginnen
 
 ### Opdracht 2.2 - Het aanmaken van een route voor /students in app.py
 Je gaat een nieuwe route toevoegen in `app.py`. Deze route haalt alle studenten op met de functie `get_all_students` en toont de gegevens in een eenvoudige HTML-string. 
-In plaats van een lijst, gebruik je een reeks `<b>`-tags en `<br>`-tags om de studenteninformatie te presenteren.
+In plaats van een lijst, gebruik een reeks `<b>`-tags en `<br>`-tags om de studenteninformatie te presenteren.
 
 **Hints:**
-* Maak boven je routes een `student_model` object aan van class `Student` met de path naar de database als parameter
 * Maak een functie list_students aan in `app.py` met route `/students`, met methode GET om alle studenten mee op te vragen
 * Roep de functie die alle students returned in `student_model` op en plaats deze in een variabel
 * Gebruik een loop (for student in students) om door alle studenten heen te lopen.
@@ -290,10 +309,6 @@ In plaats van een lijst, gebruik je een reeks `<b>`-tags en `<br>`-tags om de st
 <details> <summary><strong>Oplossing: Klik hier om te openen</strong></summary>
 
 ```python
-from models.student import * #deze moet bij de imports van app.py
-
-student_model = Student('./databases/database.db') #deze hoort net onder de imports, boven de route functies
-
 @app.route('/students', methods=['GET'])
 def list_students():
     students = student_model.get_all_students()
